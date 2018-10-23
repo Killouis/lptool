@@ -41,12 +41,13 @@ Lptool accepts the following command line options:
   Automatically copy the password in your system clipboard when the research finds only one result.
 
 -s
-  Automatically prints the password when the research finds only one result.
+  Automatically print the password when the research finds only one result.
 
 -h
   Show help menu
+  
 -i
-  Install this tool and some dependencies
+  Install this tool's dependencies
 ```
 
 ## Built With
