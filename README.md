@@ -20,6 +20,12 @@ Next run lptool with installation option:
 lptool -i
 ```
 
+And to login with you email of Lastpass, use this command:
+
+```
+lptool email@domain.com
+```
+
 ## Options
 
 Lptool accepts the following command line options:
