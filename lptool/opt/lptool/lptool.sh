@@ -19,7 +19,7 @@ while getopts ":p:k:c :s :h :i" option; do
   -p <project_name>\tProject name to match for your research
   -k <ID>\t\tKeywords to look for in your password vault
   -c\t\t\tAutomatically copy the password in your system clipboard  when  the research finds only one result
-  -s\t\t\tAutomatically  prints the password when the research finds only one result
+  -s\t\t\tAutomatically print the password when the research finds only one result
   -h\t\t\tShow this description
   -i\t\t\tInstall this tool's dependencies\n
 Please see also the documentation at https://github.com/killouis/lptool." 1>&2
@@ -52,7 +52,7 @@ i)
   -p <project_name>\tProject name to match for your research
   -k <ID>\t\tKeywords to look for in your password vault
   -c\t\t\tAutomatically copy the password in your system clipboard  when  the research finds only one result
-  -s\t\t\tAutomatically  prints the password when the research finds only one result
+  -s\t\t\tAutomatically print the password when the research finds only one result
   -h\t\t\tShow this description
   -i\t\t\tInstall this tool's dependencies\n
 Please see also the documentation at https://github.com/killouis/lptool." 1>&2
@@ -90,13 +90,13 @@ while [[ $loop -eq 1 ]]; do
       if [ ${#project[@]} -ne 0 ]; then
         echo -e "Project Name:" $project_name "\n"
       fi
-      read -p "What do you want to find? " -a search -e
+      read -p "Search: " -a search -e
       echo -e
       if [ -z $search ]; then
         search="\"\""
       fi
     else
-      echo -e "ID:" $key "\n"
+      echo -e "Selection:" $key "\n"
       search=("${key[@]}")
     fi
     if [ ${#project[@]} -ne 0 ]; then
@@ -136,7 +136,7 @@ while [[ $loop -eq 1 ]]; do
       done
       trap - 2
       echo -e
-      read -e -p "Choose a key (Default 1): " number
+      read -e -p "Selection (Default 1): " number
       echo -e
       if [ -z $number ]; then
         number=1
@@ -145,18 +145,18 @@ while [[ $loop -eq 1 ]]; do
     if [ "$number" -ge 1 -a "$number" -le $count ]; then
       lpass show $(eval "lpass ls $grep_string | grep -i ${search[$i]} | head -$number | tail -1 | awk '{print $NF}' | grep -o '[0-9]\+'")
       echo -e
-      read -e -p "Do you want copy password? (Y/n) " copy
+      read -e -p "Copy password? (Y/n) " copy
       case $copy in
         [yY][eE][sS]|[yY]|'')
           lpass show -cp $(eval "lpass ls $grep_string | grep -i ${search[$i]} | head -$number | tail -1 | awk '{print $NF}' | grep -o '[0-9]\+'")
-          echo Copied
+          echo "Done"
           ;;
         *)
-          echo Not copied
+          echo "Ok :("
           ;;
       esac
     else
-      echo Value is not valid
+      echo "Not valid selection"
     fi
   fi
   read -e -p "Retry? (N/y) " retry
