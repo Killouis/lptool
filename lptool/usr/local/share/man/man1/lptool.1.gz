@@ -1,0 +1,33 @@
+.\" Manpage for lptool.
+.TH LPTOOL 1 "15 GEN 2018" "1.0" "LPTOOL Man Page"
+.SH NAME
+lptool \- LastPass  tool used to browse your password vault from command line.
+.SH SYNOPSIS
+.B lptool
+[-p <nomeprogetto>] [-k <chiave>] [-c/-s] [-h]
+.SH DESCRIPTION
+Tool used to view, copy and print password from LastPass user.
+.SH OPTIONS
+lpass_tool accepts the following command line options:
+.TP
+  -p <project_name>
+.TP
+    Project name to match for your research
+.TP
+  -k <key>
+.TP
+    keywords to look for in your password vault
+.TP
+  -c
+.TP
+    Automatically copy the password in your system clipboard when the research finds only one result.
+.TP
+  -s
+.TP
+    Automatically prints the password when the research finds only one result.
+.SH SEE ALSO
+lpass(1)
+.SH BUGS
+No known bugs.
+.SH AUTHOR
+Quantyca

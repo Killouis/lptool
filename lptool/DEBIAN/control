@@ -1,0 +1,6 @@
+Package: lptool
+Version: 0.5
+Maintainer: Quantyca
+Architecture: all
+Description: LastPass Tool
+Depends: openssl, libcurl4-openssl-dev, libxml2, libssl1.0-dev, libxml2-dev, pinentry-curses, xclip, cmake, build-essential, pkg-config, git
