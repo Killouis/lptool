@@ -149,14 +149,14 @@ while [[ $loop -eq 1 ]]; do
       case $copy in
         [yY][eE][sS]|[yY]|'')
           lpass show -cp $(eval "lpass ls $grep_string | grep -i ${search[$i]} | head -$number | tail -1 | awk '{print $NF}' | grep -o '[0-9]\+'")
-          echo Copiata
+          echo Copied
           ;;
         *)
-          echo Non copiata
+          echo Not copied
           ;;
       esac
     else
-      echo Valore non valido
+      echo Value is not valid
     fi
   fi
   read -e -p "Retry? (N/y) " retry
