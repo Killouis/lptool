@@ -15,21 +15,14 @@ while getopts ":p:k:c :s :h :i" option; do
     print=true
     ;;
  h)
-    echo -e "Usage:
-    \t lptool [-p <nomeprogetto>] [-k <chiave>] [-c/-s] [-h] [-i]\n
-    \t-p <nomeprogetto>
-    \t    Nome del progetto in cui effettuare la ricerca
-    \t-k <chiave>
-    \t    Chiave di ricerca
-    \t-c
-    \t    Copia direttamente la password nella clipboard se viene matchato un solo risultato.
-    \t-s
-    \t    Stampa direttamente la password se viene matchato un solo risultato.
-    \t-h
-    \t    Mostra questa descrizione.
-    \t-i
-    \t    Installa il tool e le dipendenze.
-    " 1>&2
+    echo -e "Usage: lptool [-p <project_name>] [-k <ID>] [-c/-s] [-h] [-i]\n
+  -p <project_name>\tProject name to match for your research
+  -k <ID>\t\tKeywords to look for in your password vault
+  -c\t\t\tAutomatically copy the password in your system clipboard  when  the research finds only one result
+  -s\t\t\tAutomatically  prints the password when the research finds only one result
+  -h\t\t\tShow this description
+  -i\t\t\tInstall this tool's dependencies\n
+Please see also the documentation at https://github.com/killouis/lptool." 1>&2
     exit 1
     ;;
 i)
@@ -44,32 +37,25 @@ i)
       sudo rm -rf /opt/lptool/lastpass-cli
       lpass --version | grep "LastPass CLI" > /dev/null 2>&1
       if [ $? -ne 0 ]; then
-      	echo -e "\nPrerequisti mancanti: lpass non è stato installato correttamente."
+      	echo -e "\nMissing requirements: lpass has not been installed correctly."
       else
-      	echo -e "\nInstallazione dei prerequisiti completata. Eseguire seguente comando con la propria mail per configurare LastPass sul dispositivo:\n\nlptool email@domain.com"
+      	echo -e "\nInstallation of requirement is done. Run the following command with your mail address to configure LastPass on your device:\n\nlptool email@domain.com"
         sudo touch /opt/lptool/config
       fi
     else
-      echo -e "Installazione non necessaria.\nPer forzare l'installazione cancellare il file /opt/lptool/config."
+      echo -e "The installation is not required.\nTo force the installation, delete this file /opt/lptool/config."
     fi
     exit 1
     ;;
  *)
-   echo -e "Usage:
-   \t lptool [-p <nomeprogetto>] [-k <chiave>] [-c/-s] [-h] [-i]\n
-   \t-p <nomeprogetto>
-   \t    Nome del progetto in cui effettuare la ricerca
-   \t-k <chiave>
-   \t    Chiave di ricerca
-   \t-c
-   \t    Copia direttamente la password nella clipboard se viene matchato un solo risultato.
-   \t-s
-   \t    Stampa direttamente la password se viene matchato un solo risultato.
-   \t-h
-   \t    Mostra questa descrizione.
-   \t-i
-   \t    Installa il tool e le dipendenze.
-   " 1>&2
+    echo -e "Usage: lptool [-p <project_name>] [-k <ID>] [-c/-s] [-h] [-i]\n
+  -p <project_name>\tProject name to match for your research
+  -k <ID>\t\tKeywords to look for in your password vault
+  -c\t\t\tAutomatically copy the password in your system clipboard  when  the research finds only one result
+  -s\t\t\tAutomatically  prints the password when the research finds only one result
+  -h\t\t\tShow this description
+  -i\t\t\tInstall this tool's dependencies\n
+Please see also the documentation at https://github.com/killouis/lptool." 1>&2
    exit 1
    ;;
  esac
@@ -78,7 +64,7 @@ loop=1;
 while [[ $loop -eq 1 ]]; do
   lpass --version | grep "LastPass CLI" > /dev/null 2>&1
   if [ $? -ne 0 ]; then
-    echo "Prerequisti mancanti: lpass non è stato installato correttamente.\nEseguire l'installazione con il comando:\n\nlptool -i."
+    echo "Missing requirements: lpass has not been installed correctly.\nRun the installation with command:\n\nlptool -i."
     break
   fi
   if [ "$print" != true ]; then
@@ -90,7 +76,7 @@ while [[ $loop -eq 1 ]]; do
       lpass login $1
     else
       echo -e "\e[91m$(lpass status)\033[0m"
-      echo -e "Passare come argomento la mail per effettuare il login.\nExample:\n\tlptool email@domain.com".
+      echo -e "To login use the following command with your email address.\nExample:\n\tlptool email@domain.com".
       break
     fi
   else
@@ -100,17 +86,17 @@ while [[ $loop -eq 1 ]]; do
     fi
     echo -e "\e[92m$(lpass status)\033[0m\n"
     if [ ${#key[@]} -eq 0 ]; then
-      echo -e "Usage: lptool [-p <nomeprogetto>] [-k <chiave>] [-c/-s] [-h] [-i]\n" 1>&2
+      echo -e "Usage: lptool [-p <project_name>] [-k <ID>] [-c/-s] [-h] [-i]\n" 1>&2
       if [ ${#project[@]} -ne 0 ]; then
-        echo -e "Progetto:" $project_name "\n"
+        echo -e "Project Name:" $project_name "\n"
       fi
-      read -p "Cosa cerchi? " -a search -e
+      read -p "What do you want to find? " -a search -e
       echo -e
       if [ -z $search ]; then
         search="\"\""
       fi
     else
-      echo -e "Chiave di ricerca:" $key "\n"
+      echo -e "ID:" $key "\n"
       search=("${key[@]}")
     fi
     if [ ${#project[@]} -ne 0 ]; then
@@ -125,12 +111,12 @@ while [[ $loop -eq 1 ]]; do
       number=1
       if [ "$clipboard" = true ]; then
         lpass show -cp $(eval "echo $key")
-        echo -e "Password copiata!\n"
+        echo -e "Password on clipboard!\n"
         break
       fi
     elif [ $count = 0 ]; then
-      echo -e "Nessun risultato trovato\n"
-      read -e -p "Riprovare? (Y/n) " retry
+      echo -e "Result not found!\n"
+      read -e -p "Retry? (Y/n) " retry
       case $retry in
         [yY][eE][sS]|[yY]|'')
           continue
@@ -141,7 +127,7 @@ while [[ $loop -eq 1 ]]; do
       esac
     else
       if [ "$clipboard" = true ]; then
-        echo -e "Valori multipli. Copia non effettuata.\n"
+        echo -e "Multiple value. Cannot copy.\n"
       fi
       for (( c=1; c<=$count; c++ ))
       do
@@ -150,7 +136,7 @@ while [[ $loop -eq 1 ]]; do
       done
       trap - 2
       echo -e
-      read -e -p "Scegli un elemento (Default 1): " number
+      read -e -p "Choose a key (Default 1): " number
       echo -e
       if [ -z $number ]; then
         number=1
@@ -159,7 +145,7 @@ while [[ $loop -eq 1 ]]; do
     if [ "$number" -ge 1 -a "$number" -le $count ]; then
       lpass show $(eval "lpass ls $grep_string | grep -i ${search[$i]} | head -$number | tail -1 | awk '{print $NF}' | grep -o '[0-9]\+'")
       echo -e
-      read -e -p "Copiare la password? (Y/n) " copy
+      read -e -p "Do you want copy password? (Y/n) " copy
       case $copy in
         [yY][eE][sS]|[yY]|'')
           lpass show -cp $(eval "lpass ls $grep_string | grep -i ${search[$i]} | head -$number | tail -1 | awk '{print $NF}' | grep -o '[0-9]\+'")
@@ -173,7 +159,7 @@ while [[ $loop -eq 1 ]]; do
       echo Valore non valido
     fi
   fi
-  read -e -p "Riprovare? (N/y) " retry
+  read -e -p "Retry? (N/y) " retry
   case $retry in
     [yY][eE][sS]|[yY])
       continue

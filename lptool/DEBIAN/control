@@ -1,6 +1,6 @@
 Package: lptool
-Version: 0.5
-Maintainer: Quantyca
+Version: 0.7
+Maintainer: Lorenzo Verardo
 Architecture: all
-Description: LastPass Tool
+Description: LastPass CLI Tool
 Depends: openssl, libcurl4-openssl-dev, libxml2, libssl1.0-dev, libxml2-dev, pinentry-curses, xclip, cmake, build-essential, pkg-config, git
